@@ -1,0 +1,16 @@
+package com.zjy.springbootemps.service;
+
+import com.zjy.springbootemps.domain.Employee;
+import com.zjy.springbootemps.utils.PageInfo;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+
+@Service
+public interface EmployeeService {
+    public List<Map<String,Object>> findAll();
+    //public List<Employee> findEmployeeByPage(int pageNo,int pageSize);
+    public int getCount();
+    public PageInfo<Employee> findEmployeeByPage(int pageNo, int pageSize);
+}

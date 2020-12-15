@@ -12,4 +12,5 @@ public interface EmployeeDao {
     public List<Map<String,Object>> selectAll();
     public List<Employee> selectEmployeeByPage(int pageNo,int pageSize);
     public int getCount();
+    public void deleteEmployee(Integer id);
 }

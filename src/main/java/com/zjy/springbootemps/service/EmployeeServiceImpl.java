@@ -37,4 +37,19 @@ public class EmployeeServiceImpl implements EmployeeService {
         int count=employeeDao.getCount();
         return new PageInfo<>(employees,count);
     }
+
+    @Override
+    public void remove(Integer id) {
+        employeeDao.deleteEmployee(id);
+    }
+
+    @Override
+    public void removeEmployees(int[] ids) {
+        if(ids!=null&&ids.length>0){
+            for (int i = 0; i < ids.length; i++) {
+                int id = ids[i];
+                employeeDao.deleteEmployee(id);
+            }
+        }
+    }
 }

@@ -13,4 +13,7 @@ public interface EmployeeService {
     //public List<Employee> findEmployeeByPage(int pageNo,int pageSize);
     public int getCount();
     public PageInfo<Employee> findEmployeeByPage(int pageNo, int pageSize);
+    public void remove(Integer id);
+
+    void removeEmployees(int[] ids);
 }

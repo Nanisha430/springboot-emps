@@ -27,7 +27,7 @@
             <div class="layui-card">
                 <div class="layui-card-header">开启分页</div>
                 <div class="layui-card-body">
-                    <table class="layui-hide" id="test-table-page"></table>
+                    <table class="layui-hide" id="test-table-page" lay-filter="demo"></table>
                 </div>
             </div>
         </div>
@@ -40,6 +40,8 @@
         <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
         <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
         <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+        <button class="layui-btn layui-btn-sm" lay-event="addEmployees">批量添加</button>
+        <button class="layui-btn layui-btn-sm" lay-event="delEmployees">批量删除</button>
     </div>
 </script>
 <script type="text/html" id="barDemo">
@@ -52,12 +54,13 @@
         base: '../../../layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'table'], function () {
-        var admin = layui.admin
-            , table = layui.table;
-
+    }).use(['index', 'table', 'jquery'], function () {
+        var admin = layui.admin;
+        var table = layui.table
+        var $ = layui.$;
         table.render({
             elem: '#test-table-page'
+            , toolbar: '#toolbarDemo'
             , url: 'getEmployee'
             , cellMinWidth: 80
             , cols: [
@@ -66,12 +69,89 @@
                     {field: 'empno', title: '员工编号', sort: true},
                     {field: 'ename', title: '员工姓名', sort: true},
                     {field: 'hiredate', title: '入职时间', sort: true},
-                    {field: 'sal', title: '员工工资', sort: true,width:100},
-                    {fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+                    {field: 'sal', title: '员工工资', sort: true, width: 100},
+                    {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150}
                 ]
-            ]
-            , page: true
+            ],
+            page: true,
+            request: {
+                'pageName': "pageNo",
+                'limitName': "pageSize"
+            }
         });
+        table.on('tool(demo)', function (obj) {
+            var data = obj.data;
+            var empid = data.id;
+            if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
+                    layer.close(index);
+                    $.get("delEmployee", {"id": empid}, function (res) {
+                        if (res["status"] == 200) {
+                            layui.msg("操作成功", {time: 700}, function () {
+                                res.reload("#test-table-page")
+                            });
+                        }
+                    }, "json");
+                });
+            } else if (obj.event === 'edit') {
+                layer.alert('编辑行：<br>' + JSON.stringify(data))
+            }
+        });
+        table.on('toolbar(demo)', function (obj) {
+                var checkStatus = table.checkStatus(obj.config.id);
+                switch (obj.event) {
+                    case 'addEmployees':
+                        layer.msg('添加');
+                        break;
+                    case 'delEmployees':
+                        var data = checkStatus.data;
+
+                        if (data.length <= 0) {
+                            layer.msg("未选中行", {time: 700})
+                        } else {
+                            //获取所有的id
+                            var ids = [];
+                            var pramStr = "";
+                            $.each(data, function (index, obj) {
+                                var eachid = obj["id"];
+                                pramStr += "id=" + eachid + "&";
+                            })
+                            pramStr=pramStr.substr(0,pramStr.length-1);
+                            var delURL = "delEmployees?" + pramStr;
+                            $.get(delURL, null, function (res) {
+                                if (res["status"] == 200) {
+                                    layui.msg("操作成功", {time: 700}, function () {
+                                        res.reload("#test-table-page")
+                                    });
+                                }
+                            }, "json");
+                        }
+                        break;
+                    case
+                    'getCheckData'
+                    :
+                        layer.msg('编辑');
+                        break;
+                }
+                ;
+            }
+        );
+        var $ = layui.$, active = {
+            getCheckData: function () { //获取选中数据
+                var checkStatus = table.checkStatus('idTest')
+                    , data = checkStatus.data;
+                layer.alert(JSON.stringify(data));
+            }
+            , getCheckLength: function () { //获取选中数目
+                var checkStatus = table.checkStatus('idTest')
+                    , data = checkStatus.data;
+                layer.msg('选中了：' + data.length + ' 个');
+            }
+            , isAll: function () { //验证是否全选
+                var checkStatus = table.checkStatus('idTest');
+                layer.msg(checkStatus.isAll ? '全选' : '未全选')
+            }
+        };
     });
 </script>
 </body>

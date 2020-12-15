@@ -28,15 +28,21 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     @Override
     public List<Employee> selectEmployeeByPage(int pageNo, int pageSize) {
-        String sql="select * from employee limit ?,?";
+        String sql=" select * from employee limit ?,? ";
         List<Employee> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<Employee>(Employee.class),(pageNo-1)*pageSize, pageSize);
         return list;
     }
 
     @Override
     public int getCount() {
-        String sql = "select count(id) from employee";
+        String sql = " select count(id) from employee ";
         List<Integer> count = jdbcTemplate.queryForList(sql, Integer.class);
         return count.get(0);
+    }
+
+    @Override
+    public void deleteEmployee(Integer id) {
+        String sql = " delete from employee where id = ? ";
+        jdbcTemplate.update(sql,id);
     }
 }

@@ -4,6 +4,7 @@ import com.zjy.springbootemps.domain.Employee;
 import com.zjy.springbootemps.utils.PageInfo;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -16,4 +17,8 @@ public interface EmployeeService {
     public void remove(Integer id);
 
     void removeEmployees(int[] ids);
+
+    void addEmployee(String empno, String ename, String job, Date hiredate, Integer mgr, Double sal, Double comm, Integer deptno);
+
+    void changeEmployee(Integer id, String empno, String ename, String job, Integer mgr, Date hiredate, Double sal, Double comm, Integer deptno);
 }

@@ -1,14 +1,13 @@
 package com.zjy.springbootemps.service;
 
-import com.alibaba.druid.sql.ast.statement.SQLForeignKeyImpl;
 import com.zjy.springbootemps.dao.EmployeeDaoImpl;
 import com.zjy.springbootemps.domain.Employee;
 import com.zjy.springbootemps.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -51,5 +50,15 @@ public class EmployeeServiceImpl implements EmployeeService {
                 employeeDao.deleteEmployee(id);
             }
         }
+    }
+
+    @Override
+    public void addEmployee(String empno, String ename, String job, Date hiredate, Integer mgr, Double sal, Double comm, Integer deptno) {
+        employeeDao.insertEmployee(empno,ename,job,hiredate,mgr,sal,comm,deptno);
+    }
+
+    @Override
+    public void changeEmployee(Integer id, String empno, String ename, String job, Integer mgr, Date hiredate, Double sal, Double comm, Integer deptno) {
+        employeeDao.updateEmployee(id,empno,ename,job,mgr,hiredate,sal,comm,deptno);
     }
 }

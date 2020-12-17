@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -44,5 +45,17 @@ public class EmployeeDaoImpl implements EmployeeDao {
     public void deleteEmployee(Integer id) {
         String sql = " delete from employee where id = ? ";
         jdbcTemplate.update(sql,id);
+    }
+
+    @Override
+    public void insertEmployee(String empno, String ename, String job, Date hiredate, Integer mgr, Double sal, Double comm, Integer deptno) {
+        String sql = "insert into employee(empno,ename,job,mgr,hiredate,sal,comm,deptno) values(?,?,?,?,?,?,?,?)";
+        jdbcTemplate.update(sql,empno,ename,job,mgr,hiredate,sal,comm,deptno);
+    }
+
+    @Override
+    public void updateEmployee(Integer id, String empno, String ename, String job, Integer mgr, Date hiredate, Double sal, Double comm, Integer deptno) {
+        String sql= "update employee set empno=?,ename=?,job=?,mgr=?,hiredate=?,sal=?,comm=?,deptno=? where id = ?";
+        jdbcTemplate.update(sql,empno,ename,job,mgr,hiredate,sal,comm,deptno,id);
     }
 }

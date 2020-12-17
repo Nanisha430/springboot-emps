@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="../../../layuiadmin/style/admin.css" media="all">
 </head>
+<script src="../../../layuiadmin/layui/layui.js"></script>
 <body>
 
 <div class="layui-card layadmin-header">
@@ -34,13 +35,84 @@
     </div>
 </div>
 
+<div class="layui-row" id="open_div" style="display:none;">
+    <form id="add_form" class="layui-form" action="" lay-filter="addform" style="margin-top: 20px;align:center;">
+        <!--隐藏字段action，用来区分增加和编辑行为-->
+        <input type="hidden" name="action" id="action">
+        <input type="hidden" name="url" id="url">
+        <!--隐藏字段id，用于提供编辑需要的主键-->
+        <input type="hidden" name="id" id="id">
+        <!--隐藏字段request_type，用于提供请求方式:get,post,put-->
+        <input type="hidden" name="request_type" id="request_type">
+
+        <div class="layui-form-item" style="width: 96%">
+            <label class="layui-form-label">empno</label>
+            <div class="layui-input-block">
+                <input type="text" name="empno" placeholder="请输入empno"
+                       autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item" style="width: 96%">
+            <label class="layui-form-label">ename</label>
+            <div class="layui-input-block">
+                <input type="text" name="ename" placeholder="请输入ename"
+                       autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item" style="width: 96%">
+            <label class="layui-form-label">job</label>
+            <div class="layui-input-block">
+                <input type="text" name="job" placeholder="请输入job"
+                       autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item" style="width: 96%">
+            <label class="layui-form-label">mgr</label>
+            <div class="layui-input-block">
+                <input type="text" name="mgr" placeholder="请输入mgr"
+                       autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item" style="width: 96%">
+            <label class="layui-form-label">hiredate</label>
+            <div class="layui-input-block">
+                <input type="text" name="hiredate" placeholder="请输入hiredate"
+                       autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item" style="width: 96%">
+            <label class="layui-form-label">sal</label>
+            <div class="layui-input-block">
+                <input type="text" name="sal" placeholder="请输入sal"
+                       autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item" style="width: 96%">
+            <label class="layui-form-label">comm</label>
+            <div class="layui-input-block">
+                <input type="text" name="comm" placeholder="请输入comm"
+                       autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item" style="width: 96%">
+            <label class="layui-form-label">deptno</label>
+            <div class="layui-input-block">
+                <input type="text" name="deptno" placeholder="请输入deptno"
+                       autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item" style="margin-left: 40%">
+            <div class="layui-btn-group">
+                <button class="layui-btn" lay-submit="" lay-filter="btnSubmit">提&ensp;交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重&ensp;置</button>
+            </div>
+        </div>
+    </form>
+</div>
 
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
-        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
-        <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
-        <button class="layui-btn layui-btn-sm" lay-event="addEmployees">批量添加</button>
+        <button class="layui-btn layui-btn-sm" lay-event="addEmployees">添加用户</button>
         <button class="layui-btn layui-btn-sm" lay-event="delEmployees">批量删除</button>
     </div>
 </script>
@@ -48,16 +120,17 @@
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
-<script src="../../../layuiadmin/layui/layui.js"></script>
+
 <script>
     layui.config({
         base: '../../../layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'table', 'jquery'], function () {
+    }).use(['index', 'table', 'jquery', 'form'], function () {
         var admin = layui.admin;
         var table = layui.table
         var $ = layui.$;
+        var form = layui.form;
         table.render({
             elem: '#test-table-page'
             , toolbar: '#toolbarDemo'
@@ -81,61 +154,100 @@
         });
         table.on('tool(demo)', function (obj) {
             var data = obj.data;
-            var empid = data.id;
+            var id = data.id;
             if (obj.event === 'del') {
                 layer.confirm('真的删除行么', function (index) {
                     layer.close(index);
-                    $.get("delEmployee", {"id": empid}, function (res) {
+                    $.get("delEmployee", {"id": id}, function (res) {
                         if (res["status"] == 200) {
-                            layui.msg("操作成功", {time: 700}, function () {
-                                res.reload("#test-table-page")
-                            });
+                            table.reload('test-table-page')
                         }
                     }, "json");
                 });
             } else if (obj.event === 'edit') {
-                layer.alert('编辑行：<br>' + JSON.stringify(data))
+                var data={};
+                // 根据编辑行为为form隐藏项赋值
+                $("#id").val(id);
+                $("#action").val("updateEmployee");
+                $("#url").val("updateEmployee");
+                layer.open({
+                    type: 1,
+                    title: "修改个人信息",
+                    area: ['450px', '550px'],
+                    content: $("#open_div")
+                });
             }
         });
         table.on('toolbar(demo)', function (obj) {
-                var checkStatus = table.checkStatus(obj.config.id);
-                switch (obj.event) {
-                    case 'addEmployees':
-                        layer.msg('添加');
-                        break;
-                    case 'delEmployees':
-                        var data = checkStatus.data;
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'addEmployees':
+                    var data={};
+                    $("#action").val("addEmployee");
+                    $("#url").val("addEmployee");
+                    // 调用打开弹层的工具方法
+                    layer.open({
+                        type: 1,
+                        title: "修改个人信息",
+                        area: ['450px', '550px'],
+                        content: $("#open_div")
+                    });
+                    break;
+                case 'delEmployees':
+                    var data = checkStatus.data;
 
-                        if (data.length <= 0) {
-                            layer.msg("未选中行", {time: 700})
-                        } else {
-                            //获取所有的id
-                            var ids = [];
-                            var pramStr = "";
-                            $.each(data, function (index, obj) {
-                                var eachid = obj["id"];
-                                pramStr += "id=" + eachid + "&";
-                            })
-                            pramStr=pramStr.substr(0,pramStr.length-1);
-                            var delURL = "delEmployees?" + pramStr;
-                            $.get(delURL, null, function (res) {
-                                if (res["status"] == 200) {
-                                    layui.msg("操作成功", {time: 700}, function () {
-                                        res.reload("#test-table-page")
-                                    });
-                                }
-                            }, "json");
-                        }
-                        break;
-                    case
-                    'getCheckData'
-                    :
-                        layer.msg('编辑');
-                        break;
-                }
-                ;
+                    if (data.length <= 0) {
+                        layer.msg("未选中行", {time: 700})
+                    } else {
+                        //获取所有的id
+                        var ids = [];
+                        var pramStr = "";
+                        $.each(data, function (index, obj) {
+                            var eachid = obj["id"];
+                            pramStr += "id=" + eachid + "&";
+                        })
+                        pramStr = pramStr.substr(0, pramStr.length - 1);
+                        var delURL = "delEmployees?" + pramStr;
+                        $.get(delURL, null, function (res) {
+                            if (res["status"] == 200) {
+                               table.reload('test-table-page')
+                            }
+                        }, "json");
+                    }
+                    break;
             }
-        );
+            ;
+        });
+        form.on('submit(btnSubmit)', function (data) {
+            var empid = data.field.id;
+            alert(empid)
+            var empno = data.field.empno;
+            var ename = data.field.ename;
+            var job = data.field.job;
+            var mgr = data.field.mgr;
+            var hiredate = data.field.hiredate;
+            var sal = data.field.sal;
+            var comm = data.field.comm;
+            var deptno = data.field.deptno;
+
+            $.get(data.field.url, {
+                "id": empid,
+                "empno": empno,
+                "ename": ename,
+                "job": job,
+                "mgr": mgr,
+                "hiredate": hiredate,
+                "sal": sal,
+                "comm": comm,
+                "deptno": deptno
+            }, function (res) {
+                if (res["code"] == 0) {
+                    table.reload('test-table-page')
+                }
+            }, "json");
+            layer.closeAll();//关闭弹出层
+            return false;
+        });
         var $ = layui.$, active = {
             getCheckData: function () { //获取选中数据
                 var checkStatus = table.checkStatus('idTest')

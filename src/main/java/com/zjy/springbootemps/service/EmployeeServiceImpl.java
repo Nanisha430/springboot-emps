@@ -53,12 +53,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void addEmployee(String empno, String ename, String job, Date hiredate, Integer mgr, Double sal, Double comm, Integer deptno) {
-        employeeDao.insertEmployee(empno,ename,job,hiredate,mgr,sal,comm,deptno);
+    public void addEmployee(String empno, String ename, String job, Integer dno) {
+        employeeDao.insertEmployee(empno,ename,job,dno);
     }
 
     @Override
-    public void changeEmployee(Integer id, String empno, String ename, String job, Integer mgr, Date hiredate, Double sal, Double comm, Integer deptno) {
-        employeeDao.updateEmployee(id,empno,ename,job,mgr,hiredate,sal,comm,deptno);
+    public void changeEmployee(Integer id, String empno, String ename, String job, Integer dno) {
+        employeeDao.updateEmployee(id,empno,ename,job,dno);
     }
 }

@@ -15,9 +15,12 @@ public class MyMvcConfig implements WebMvcConfigurer {
         registry.addViewController("/selectEmps").setViewName("/empsManage/selectEmps");
     }
 
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(new LoginHandlerIntercepter())
-//                .addPathPatterns("/**").excludePathPatterns("/","/login.html","/login","/static/**","/css/**","/js/**","/images/**","/userlist","/selectEmps","/druid/**");
-//    }
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new LoginHandlerIntercepter())
+                .addPathPatterns("/**").excludePathPatterns("/","/login.html","/login"
+                , "/static/**","/css/**","/js/**","/images/**","/userlist"
+                ,"/selectEmps","/druid/**","/templates/common/header.html"
+                ,"/templates/common/sidebar.html");
+    }
 }

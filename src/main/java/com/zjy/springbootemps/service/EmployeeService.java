@@ -18,7 +18,7 @@ public interface EmployeeService {
 
     void removeEmployees(int[] ids);
 
-    void addEmployee(String empno, String ename, String job, Date hiredate, Integer mgr, Double sal, Double comm, Integer deptno);
+    void addEmployee(String empno, String ename, String job, Integer dno);
 
-    void changeEmployee(Integer id, String empno, String ename, String job, Integer mgr, Date hiredate, Double sal, Double comm, Integer deptno);
+    void changeEmployee(Integer id, String empno, String ename, String job, Integer dno);
 }

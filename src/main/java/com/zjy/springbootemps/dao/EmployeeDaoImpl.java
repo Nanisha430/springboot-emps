@@ -48,14 +48,14 @@ public class EmployeeDaoImpl implements EmployeeDao {
     }
 
     @Override
-    public void insertEmployee(String empno, String ename, String job, Date hiredate, Integer mgr, Double sal, Double comm, Integer deptno) {
-        String sql = "insert into employee(empno,ename,job,mgr,hiredate,sal,comm,deptno) values(?,?,?,?,?,?,?,?)";
-        jdbcTemplate.update(sql,empno,ename,job,mgr,hiredate,sal,comm,deptno);
+    public void insertEmployee(String empno, String ename, String job, Integer dno) {
+        String sql = "insert into employee(empno,ename,job,dno) values(?,?,?,?)";
+        jdbcTemplate.update(sql,empno,ename,job,dno);
     }
 
     @Override
-    public void updateEmployee(Integer id, String empno, String ename, String job, Integer mgr, Date hiredate, Double sal, Double comm, Integer deptno) {
-        String sql= "update employee set empno=?,ename=?,job=?,mgr=?,hiredate=?,sal=?,comm=?,deptno=? where id = ?";
-        jdbcTemplate.update(sql,empno,ename,job,mgr,hiredate,sal,comm,deptno,id);
+    public void updateEmployee(Integer id, String empno, String ename, String job, Integer dno) {
+        String sql= "update employee set empno=?,ename=?,job=?,dno=? where id = ?";
+        jdbcTemplate.update(sql,empno,ename,job,dno,id);
     }
 }

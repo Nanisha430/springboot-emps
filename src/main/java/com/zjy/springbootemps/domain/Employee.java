@@ -11,12 +11,7 @@ public class Employee {
     private Integer empno;
     private String ename;
     private String job;
-    private Integer mgr;
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyyMMddHHmmss")
-    private Date hiredate;
-    private Double sal;
-    private Double comm;
-    private Integer deptno;
+    private Integer dno;
 
     public Employee() {
     }
@@ -53,58 +48,11 @@ public class Employee {
         this.job = job;
     }
 
-    public Integer getMgr() {
-        return mgr;
+    public Integer getDno() {
+        return dno;
     }
 
-    public void setMgr(Integer mgr) {
-        this.mgr = mgr;
-    }
-
-    public Date getHiredate() {
-        return hiredate;
-    }
-
-    public void setHiredate(Date hiredate) {
-        this.hiredate = hiredate;
-    }
-
-    public Double getSal() {
-        return sal;
-    }
-
-    public void setSal(Double sal) {
-        this.sal = sal;
-    }
-
-    public Double getComm() {
-        return comm;
-    }
-
-    public void setComm(Double comm) {
-        this.comm = comm;
-    }
-
-    public Integer getDeptno() {
-        return deptno;
-    }
-
-    public void setDeptno(Integer deptno) {
-        this.deptno = deptno;
-    }
-
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "id=" + id +
-                ", empno=" + empno +
-                ", ename='" + ename + '\'' +
-                ", job='" + job + '\'' +
-                ", mgr=" + mgr +
-                ", hiredate=" + hiredate +
-                ", sal=" + sal +
-                ", comm=" + comm +
-                ", deptno=" + deptno +
-                '}';
+    public void setDno(Integer dno) {
+        this.dno = dno;
     }
 }

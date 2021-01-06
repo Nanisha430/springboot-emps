@@ -67,37 +67,9 @@
             </div>
         </div>
         <div class="layui-form-item" style="width: 96%">
-            <label class="layui-form-label">mgr</label>
+            <label class="layui-form-label">dno</label>
             <div class="layui-input-block">
-                <input type="text" name="mgr" placeholder="请输入mgr"
-                       autocomplete="off" class="layui-input" lay-verify="required">
-            </div>
-        </div>
-        <div class="layui-form-item" style="width: 96%">
-            <label class="layui-form-label">hiredate</label>
-            <div class="layui-input-block">
-                <input type="text" name="hiredate" placeholder="请输入hiredate"
-                       autocomplete="off" class="layui-input" lay-verify="required">
-            </div>
-        </div>
-        <div class="layui-form-item" style="width: 96%">
-            <label class="layui-form-label">sal</label>
-            <div class="layui-input-block">
-                <input type="text" name="sal" placeholder="请输入sal"
-                       autocomplete="off" class="layui-input" lay-verify="required">
-            </div>
-        </div>
-        <div class="layui-form-item" style="width: 96%">
-            <label class="layui-form-label">comm</label>
-            <div class="layui-input-block">
-                <input type="text" name="comm" placeholder="请输入comm"
-                       autocomplete="off" class="layui-input" lay-verify="required">
-            </div>
-        </div>
-        <div class="layui-form-item" style="width: 96%">
-            <label class="layui-form-label">deptno</label>
-            <div class="layui-input-block">
-                <input type="text" name="deptno" placeholder="请输入deptno"
+                <input type="text" name="dno" placeholder="请输入dno"
                        autocomplete="off" class="layui-input" lay-verify="required">
             </div>
         </div>
@@ -141,8 +113,8 @@
                     {type: 'checkbox', fixed: 'left'},
                     {field: 'empno', title: '员工编号', sort: true},
                     {field: 'ename', title: '员工姓名', sort: true},
-                    {field: 'hiredate', title: '入职时间', sort: true},
-                    {field: 'sal', title: '员工工资', sort: true, width: 100},
+                    {field: 'job', title: '工作', sort: true},
+                    {field: 'dno', title: '员工宿舍号', sort: true, width: 100},
                     {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150}
                 ]
             ],
@@ -173,7 +145,7 @@
                 layer.open({
                     type: 1,
                     title: "修改个人信息",
-                    area: ['450px', '550px'],
+                    area: ['450px', '350px'],
                     content: $("#open_div")
                 });
             }
@@ -188,8 +160,8 @@
                     // 调用打开弹层的工具方法
                     layer.open({
                         type: 1,
-                        title: "修改个人信息",
-                        area: ['450px', '550px'],
+                        title: "增加个人信息",
+                        area: ['450px', '350px'],
                         content: $("#open_div")
                     });
                     break;
@@ -220,26 +192,17 @@
         });
         form.on('submit(btnSubmit)', function (data) {
             var empid = data.field.id;
-            alert(empid)
             var empno = data.field.empno;
             var ename = data.field.ename;
             var job = data.field.job;
-            var mgr = data.field.mgr;
-            var hiredate = data.field.hiredate;
-            var sal = data.field.sal;
-            var comm = data.field.comm;
-            var deptno = data.field.deptno;
+            var dno = data.field.dno;
 
             $.get(data.field.url, {
                 "id": empid,
                 "empno": empno,
                 "ename": ename,
                 "job": job,
-                "mgr": mgr,
-                "hiredate": hiredate,
-                "sal": sal,
-                "comm": comm,
-                "deptno": deptno
+                "dno": dno
             }, function (res) {
                 if (res["code"] == 0) {
                     table.reload('test-table-page')
